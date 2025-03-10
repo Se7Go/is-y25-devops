@@ -1,0 +1,6 @@
+services:
+
+  mynginx:
+    image: lab1/mynginx
+    build:
+      dockerfile: ./Dockerfile
