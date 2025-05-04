@@ -3,7 +3,6 @@ FROM alpine:latest AS builder
 RUN apk add --no-cache openjdk17 maven
 
 ENV APP_HOME=/app
-ENV PATH="$APP_HOME/bin:$PATH"
 
 WORKDIR $APP_HOME
 
