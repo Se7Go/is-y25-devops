@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  instagram-build:
+    build:
+      context: ./build
+      dockerfile: Dockerfile
+    image: instagram-build
+    container_name: instagram-build
+    volumes:
+      - .:/app
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=mydb
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  instagram-run:
+    build:
+      context: ./run
+      dockerfile: Dockerfile
+    image: instagram-run
+    container_name: instagram-run
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=mydb
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+    depends_on:
+      - mysql
+      - instagram-build
+
+volumes:
+  mysql-data:

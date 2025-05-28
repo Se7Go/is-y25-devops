@@ -1,0 +1,12 @@
+FROM alpine:latest
+
+RUN adduser -D appuser
+
+COPY --from=builder /app/target/*.jar /app/app.jar
+
+WORKDIR /app
+
+USER appuser
+
+# Запускаем приложение
+ENTRYPOINT ["java", "-jar", "app.jar"]
