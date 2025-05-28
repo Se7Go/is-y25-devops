@@ -3,8 +3,8 @@ version: '3.8'
 services:
   instagram-build:
     build:
-      context: ./build
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.build
     image: instagram-build
     container_name: instagram-build
     volumes:
@@ -37,8 +37,8 @@ services:
 
   instagram-run:
     build:
-      context: ./run
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.run
     image: instagram-run
     container_name: instagram-run
     ports:

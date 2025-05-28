@@ -3,5 +3,4 @@ FROM alpine:latest
 RUN apk add --no-cache openjdk17 maven
 
 # Очищаем кеш после установки
-RUN apk --purge del build-base && \
-    rm -rf /var/cache/apk/*
+RUN rm -rf /var/cache/apk/*
