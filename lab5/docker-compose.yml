@@ -13,10 +13,12 @@ services:
     build:
       context: ./back
       dockerfile: Dockerfile
+    image: builder
     container_name: spring-backend
     env_file: .env
     depends_on:
       - db
+      - app-repo
     networks:
       - app-network
     restart: unless-stopped
@@ -48,7 +50,12 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-
+  app-repo:
+    build:
+      context: .
+      dockerfile: Dockerfile.system
+    container_name: app-repo
+    image: app-repo
 networks:
   app-network:
     driver: bridge

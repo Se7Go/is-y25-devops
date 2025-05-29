@@ -3,7 +3,7 @@ FROM eclipse-temurin:24-alpine
 WORKDIR /app
 
 # Копируем только бэкенд часть
-COPY --from=app-source /repo/spring-backend /app
+COPY --from=app-repo /repo/spring-backend /app
 
 RUN apk add --no-cache maven && \
     mvn clean package && \

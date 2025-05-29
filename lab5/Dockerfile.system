@@ -1,4 +1,4 @@
-FROM alpine:latest as source
+FROM alpine:latest
 
 WORKDIR /repo
 
@@ -7,4 +7,4 @@ RUN apk add --no-cache git && \
     apk del git
 
 # Оставляем только нужные папки
-RUN rm -rf $(ls -A | grep -Ev "spring-backend|react-frontend")
+# RUN rm -rf $(ls -A | grep -Ev "spring-backend|react-frontend")

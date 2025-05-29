@@ -1,12 +1,20 @@
 version: '3.8'
 
 services:
-  instagram-build:
+  app-builder:
     build:
       context: .
-      dockerfile: Dockerfile.build
-    image: instagram-build
-    container_name: instagram-build
+      target: builder
+    image: app-builder
+    container_name: app-builder
+    volumes:
+      - .:/app
+  run:
+    build:
+      context: .
+      target: run
+    image: app-run
+    container_name: app-run
     volumes:
       - .:/app
     environment:
@@ -15,12 +23,31 @@ services:
       - DB_NAME=mydb
       - DB_USER=myuser
       - DB_PASSWORD=mypassword
+    ports:
+      - "8080:8080"
     depends_on:
+      - app-builder
       - mysql
+  # instagram-build:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.build
+  #   image: instagram-build
+  #   container_name: instagram-build
+  #   volumes:
+  #     - .:/app
+  #   environment:
+  #     - DB_HOST=mysql
+  #     - DB_PORT=3306
+  #     - DB_NAME=mydb
+  #     - DB_USER=myuser
+  #     - DB_PASSWORD=mypassword
+  #   depends_on:
+  #     - mysql
 
   mysql:
     image: mysql:8.0
-    container_name: mysql
+    container_name: mysql_lab_4
     environment:
       MYSQL_DATABASE: mydb
       MYSQL_USER: myuser
@@ -35,23 +62,23 @@ services:
       timeout: 20s
       retries: 10
 
-  instagram-run:
-    build:
-      context: .
-      dockerfile: Dockerfile.run
-    image: instagram-run
-    container_name: instagram-run
-    ports:
-      - "8080:8080"
-    environment:
-      - DB_HOST=mysql
-      - DB_PORT=3306
-      - DB_NAME=mydb
-      - DB_USER=myuser
-      - DB_PASSWORD=mypassword
-    depends_on:
-      - mysql
-      - instagram-build
+  # instagram-run:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.run
+  #   image: instagram-run
+  #   container_name: instagram-run
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - DB_HOST=mysql
+  #     - DB_PORT=3306
+  #     - DB_NAME=mydb
+  #     - DB_USER=myuser
+  #     - DB_PASSWORD=mypassword
+  #   depends_on:
+  #     - mysql
+  #     - instagram-build
 
 volumes:
   mysql-data:
